@@ -8,4 +8,6 @@
 
 class ZhisousouPipeline(object):
     def process_item(self, item, spider):
+        print(item)
+        item.save_to_es()
         return item

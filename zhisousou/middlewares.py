@@ -11,6 +11,7 @@ from scrapy.http.response.html import HtmlResponse
 import time
 import random
 
+
 class ZhisousouSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
@@ -59,15 +60,17 @@ class ZhisousouSpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
+# 设置随机ip
 class RandomIpMiddleware(object):
     with open(r'C:\Users\asus\Desktop\爬虫\scrapy教程\zhisousou\utils\ip.txt', 'r') as f:
         PROXIES = f.readlines()
     PROXIE = []
     for i in PROXIES:
-        PROXIE.append('http://'+i.replace('\n', ''))
+        PROXIE.append('http://' + i.replace('\n', ''))
 
     def process_request(self, request, spider):
         proxy = random.choice(self.PROXIE)
+        print(proxy)
         request.meta['proxy'] = proxy
 
 
