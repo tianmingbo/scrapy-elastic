@@ -90,10 +90,13 @@ class ZhisousouDownloaderMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        self.driver.get(request.url)
-        time.sleep(2)
-        source = self.driver.page_source
-        return HtmlResponse(url=self.driver.current_url, body=source, encoding='utf-8', request=request)
+        if spider.name == 'zhilian':
+            self.driver.get(request.url)
+            time.sleep(2)
+            source = self.driver.page_source
+            return HtmlResponse(url=self.driver.current_url, body=source, encoding='utf-8', request=request)
+        else:
+            return None
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
