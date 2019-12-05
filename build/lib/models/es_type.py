@@ -36,7 +36,7 @@ class JobType(DocType):
     '''
     suggest = Completion(analyzer=ik_analyzer)
     title = Text(analyzer="ik_max_word")
-    img = Keyword()
+    salary = Keyword()
     job_city = Text(analyzer="ik_max_word")
     work_years = Keyword()
     degree_need = Keyword()

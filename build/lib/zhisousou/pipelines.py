@@ -8,13 +8,6 @@
 
 class ZhisousouPipeline(object):
     def process_item(self, item, spider):
-        if spider.name != 'xuanjianghui':
-            print(item)
-            item.save_to_es()
-            return item
-        else:
-            print(item)
-            item.save_to_es()
-            return item
-
-
+        print(item)
+        item.save_to_es()
+        return item

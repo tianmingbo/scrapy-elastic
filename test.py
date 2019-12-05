@@ -1,15 +1,12 @@
 __author__ = '田明博'
 __date__ = '2019/11/27 17:53'
-import redis
-
-redis_cli = redis.StrictRedis(password="123456")
-redis_cli.zincrby("search_keywords_set", 1, 'java架构')
-redis_cli.zincrby("search_keywords_set", 1, 'c')
-redis_cli.zincrby("search_keywords_set", 1, 'c')
-redis_cli.zincrby("search_keywords_set", 1, 'py')
-opn_search = redis_cli.zrevrange("search_keywords_set", 0, -1, withscores=True)
-top=[]
-for obj in opn_search:
-    keyword,score=obj
-    top.append(keyword.decode('utf-8'))
-print(top)
+list=['启航考研宣讲会',
+ '举办场地 ： 科学校区 宣讲室后勤楼110室',
+ '举办时间 ： 2019-12-03 18:00 —  2019-12-03 20:00',
+ '\r\n                                            当前状态 ：\r\n',
+ '未开始 ',
+ '                                        ']
+print(list[2][7:])
+print(list[0])
+print(list[4])
+print(list[1][7:])

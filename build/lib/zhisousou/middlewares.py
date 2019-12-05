@@ -78,9 +78,9 @@ class ZhisousouDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
-    # def __init__(self):
-    #     self.driver_path = r'D:\BaiduNetdiskDownload\geckodriver.exe'
-    #     self.driver = webdriver.Firefox(executable_path=self.driver_path)
+    def __init__(self):
+        self.driver_path = r'D:\BaiduNetdiskDownload\geckodriver.exe'
+        self.driver = webdriver.Firefox(executable_path=self.driver_path)
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -90,13 +90,11 @@ class ZhisousouDownloaderMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        if spider.name == 'zhilian' or spider.name == 'xuanjianghui':
-            driver_path = r'D:\BaiduNetdiskDownload\geckodriver.exe'
-            driver = webdriver.Firefox(executable_path=driver_path)
-            driver.get(request.url)
+        if spider.name == 'zhilian':
+            self.driver.get(request.url)
             time.sleep(2)
-            source = driver.page_source
-            return HtmlResponse(url=driver.current_url, body=source, encoding='utf-8', request=request)
+            source = self.driver.page_source
+            return HtmlResponse(url=self.driver.current_url, body=source, encoding='utf-8', request=request)
         else:
             return None
 

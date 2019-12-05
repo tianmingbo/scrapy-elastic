@@ -8,7 +8,7 @@ import redis
 import scrapy
 from scrapy.loader.processors import MapCompose
 from models.es_type import JobType
-from models.xuan_models import XuanType
+
 from elasticsearch_dsl.connections import connections
 
 es = connections.create_connection(JobType._doc_type.using)  # 连接到es
@@ -24,7 +24,7 @@ def remove_splash(value):
 class ZhisousouItem(scrapy.Item):
     title = scrapy.Field()  # 职位名称
     salary = scrapy.Field()  # 薪水
-    job_city = scrapy.Field(input_processor=MapCompose(remove_splash), )  # 工作城市
+    job_city = scrapy.Field(input_processor=MapCompose(remove_splash),)  # 工作城市
     work_years = scrapy.Field(input_processor=MapCompose(remove_splash), )  # 工作年限
     degree_need = scrapy.Field(input_processor=MapCompose(remove_splash), )  # 学历要求
     job_type = scrapy.Field()  # 工作类型
@@ -37,7 +37,7 @@ class ZhisousouItem(scrapy.Item):
     company_url = scrapy.Field()  # 公司链接
 
     def save_to_es(self):
-        # 保存到es中
+        #保存到es中
         job = JobType()
         job.title = self['title']
         job.salary = self["salary"]
@@ -81,37 +81,3 @@ def gen_suggests(index, info_tuple):
             suggests.append({"input": list(new_words), "weight": weight})
 
     return suggests
-
-
-class XuanItem(scrapy.Item):
-    img = scrapy.Field()  # 图片链接
-    title = scrapy.Field()  # 宣讲会名称
-    address = scrapy.Field()  # 举办地址
-    time = scrapy.Field()  # 举办时间
-    status = scrapy.Field()  # 状态
-    detail_url = scrapy.Field()  # 宣讲会详情链接
-    from_school = scrapy.Field()  # 来源
-    city = scrapy.Field()  # 所在城市
-
-    def save_to_es(self):
-        # 保存到es中
-        print(self)
-        for i in range(len(self['address'])):
-            teach_in = XuanType()
-            teach_in.address = self['address'][i]
-            teach_in.city = self["city"][i]
-            teach_in.detail_url = self["detail_url"][i]
-            teach_in.from_school = self["from_school"][i]
-            teach_in.img = self["img"][i]
-            teach_in.status = self["status"][i]
-            teach_in.time = self["time"][i]
-            teach_in.title = self["title"][i]
-            # 搜索建议
-
-            teach_in.suggest = gen_suggests(XuanType._doc_type.index, ((teach_in.title, 10), (teach_in.city, 7)))
-
-            teach_in.save()
-
-        # redis_cli.incr("lagou_count")  # 每个网站爬取的数量，使用redis
-
-        return
